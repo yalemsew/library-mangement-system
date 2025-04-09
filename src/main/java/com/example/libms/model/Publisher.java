@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "publishers")
 @NoArgsConstructor
@@ -16,7 +18,10 @@ public class Publisher {
     @Column(nullable = false)
     private String name;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
+    @OneToMany(mappedBy = "publisher")
+    private List<Book> book;
 
     public Publisher(String name) {
     }
