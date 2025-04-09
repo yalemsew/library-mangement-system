@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface PublisherService {
     //create
-    Optional<PublisherResponseDto> createPublisher(Publisher publisher);
+    Optional<PublisherResponseDto> createPublisher(PublisherRequestDto publisherRequestDto);
+
     //find
     Optional<PublisherResponseDto> findPublisherByName(String name);
     //find all

@@ -1,13 +1,13 @@
 package com.example.libms.service.impl;
 
 import com.example.libms.dto.request.PublisherRequestDto;
-import com.example.libms.dto.response.AddressResponseDto;
 import com.example.libms.dto.response.PublisherResponseDto;
-import com.example.libms.model.Address;
+import com.example.libms.mapper.PublisherMapper;
 import com.example.libms.model.Publisher;
 import com.example.libms.repository.PublisherRepository;
 import com.example.libms.service.PublisherService;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,43 +16,23 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PublisherServiceImpl implements PublisherService {
+    PublisherServiceImpl INSTANCE = Mappers.getMapper( PublisherServiceImpl.class );
+
 
     private final PublisherRepository publisherRepository;
+    private final PublisherMapper publisherMapper;
+
     @Override
     public Optional<PublisherResponseDto> createPublisher(PublisherRequestDto publisherRequestDto) {
         // from publisherRequestDto to publisher
-        Publisher publisher = new Publisher(
-                publisherRequestDto.name()
-        );
-        publisher.setAddress(
-                new Address(
-                        publisherRequestDto.addressRequestDto().street() ,
-                        publisherRequestDto.addressRequestDto().city(),
-                        publisherRequestDto.addressRequestDto().state(),
-                        publisherRequestDto.addressRequestDto().country(),
-                        publisherRequestDto.addressRequestDto().zipCode()
-                )
-        );
+        Publisher publisher = publisherMapper.toPublisher(publisherRequestDto);
+
         Publisher savedPublisher = publisherRepository.save(publisher);
 
-        PublisherResponseDto publisherResponseDto = new PublisherResponseDto(
-                savedPublisher.getId(),
-                savedPublisher.getName(),
-                new AddressResponseDto(
-                        savedPublisher.getAddress().getStreet(),
-                        savedPublisher.getAddress().getCity(),
-                        savedPublisher.getAddress().getState(),
-                        savedPublisher.getAddress().getCountry(),
-                        savedPublisher.getAddress().getZipCode()
+        PublisherResponseDto publisherResponseDto = publisherMapper.publisherToPublisherResponseDto(savedPublisher);
 
-                           savedPublisher.getAddress().getStreet(),
-                        savedPublisher.getAddress().getStreet(),
-                        savedPublisher.getAddress().getCity(),
-                        savedPublisher.getAddress().getState()
-
-                )
-        );
         return Optional.ofNullable(publisherResponseDto);
+
     }
 
     @Override
