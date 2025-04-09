@@ -11,7 +11,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id")
     private Long id;
+    @Column(nullable = false)
     private String unitNO;
+    @Column(nullable = false)
     private String street;
     private String city;
     private String state;

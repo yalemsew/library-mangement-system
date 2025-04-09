@@ -1,5 +1,4 @@
 package com.example.libms.dto.request;
 
-public record PublisherRequestDto() {
-
+public record AddressRequestDto() {
 }
