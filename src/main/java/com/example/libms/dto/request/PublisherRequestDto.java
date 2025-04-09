@@ -1,5 +1,10 @@
 package com.example.libms.dto.request;
 
-public record PublisherRequestDto() {
+//name, address, and book
+public record PublisherRequestDto(
+        String name,
+        AddressRequestDto address
+
+) {
 
 }
